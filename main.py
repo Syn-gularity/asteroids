@@ -3,6 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
+from player import Player
 
 def main():
     pygame.init()
@@ -10,16 +11,29 @@ def main():
     py_clock = pygame.time.Clock() # Initialize a Clock for clockspeed
     dt = 0
 
-    while True:
-        # Check for PlayerInput
-        # Update World
-        # Draw new state
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
 
-        dt = py_clock.tick(60)
-        dt /= 1000
+    Player.containers = (updatable, drawable)
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        # Check for PlayerInput
+        updatable.update(dt)
+        # Update World
+
+        # Draw new state
+        screen.fill("black")
+        for obj in drawable:
+            obj.draw(screen)
+        pygame.display.flip()
+        
+        dt = py_clock.tick(60) / 1000
+        
+        
 
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
